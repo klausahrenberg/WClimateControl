@@ -10,6 +10,14 @@
 
 const uint8_t stateOff[21] = { 0x02, 0xB2, 0x0F, 0x00, 0x00, 0x00, 0xC0, 0x01, 0xD2,
 		0x0F, 0x00, 0x00, 0x00, 0x00, 0x01, 0x02, 0xFF, 0x71, 0x80, 0x11, 0xC0 };
+const char* MODE_AUTO        = "auto";
+const char* MODE_COOL        = "cool";
+const char* MODE_FAN         = "fan";
+const char* FAN_MODE_AUTO    = "auto";
+const char* FAN_MODE_LOW     = "low";
+const char* FAN_MODE_MEDIUM  = "medium";
+const char* FAN_MODE_HIGH    = "high";
+const char* FAN_MODE_TURBO   = "turbo";
 
 class WSamsungDevice: public WDevice {
 public:
@@ -50,10 +58,10 @@ public:
 		//Mode
 		this->modeProperty = WProperty::createStringProperty("mode", "Mode", 4);
 		this->samsungAc->setMode(kSamsungAcCool);
-		this->modeProperty->setString("Cool");
-		this->modeProperty->addEnumString("Auto");
-		this->modeProperty->addEnumString("Cool");
-		this->modeProperty->addEnumString("Fan");
+		this->modeProperty->setString(MODE_COOL);
+		this->modeProperty->addEnumString(MODE_AUTO);
+		this->modeProperty->addEnumString(MODE_COOL);
+		this->modeProperty->addEnumString(MODE_FAN);
 		this->modeProperty->setOnChange(std::bind(&WSamsungDevice::modePropertyChanged, this, std::placeholders::_1));
 		this->addProperty(modeProperty);
 		network->getSettings()->add(modeProperty);
@@ -68,12 +76,12 @@ public:
 		//Fan Speed
 		this->fanProperty = WProperty::createStringProperty("fanSpeed", "Fan Speed", 6);
 		this->samsungAc->setFan(kSamsungAcFanLow);
-		this->fanProperty->setString("Low");
-		this->fanProperty->addEnumString("Auto");
-		this->fanProperty->addEnumString("Low");
-		this->fanProperty->addEnumString("Medium");
-		this->fanProperty->addEnumString("High");
-		this->fanProperty->addEnumString("Turbo");
+		this->fanProperty->setString(FAN_MODE_LOW);
+		this->fanProperty->addEnumString(FAN_MODE_AUTO);
+		this->fanProperty->addEnumString(FAN_MODE_LOW);
+		this->fanProperty->addEnumString(FAN_MODE_MEDIUM);
+		this->fanProperty->addEnumString(FAN_MODE_HIGH);
+		this->fanProperty->addEnumString(FAN_MODE_TURBO);
 		this->fanProperty->setOnChange(std::bind(&WSamsungDevice::fanPropertyChanged, this, std::placeholders::_1));
 		this->addProperty(fanProperty);
 		network->getSettings()->add(fanProperty);
@@ -137,13 +145,13 @@ protected:
 	}
 
 	void modePropertyChanged(WProperty* property) {
-		if (property->equalsString("Auto")) {
+		if (property->equalsString(MODE_AUTO)) {
 			this->samsungAc->setMode(kSamsungAcAuto);
 			this->sendShort = true;
-		} else if (property->equalsString("Cool")) {
+		} else if (property->equalsString(MODE_COOL)) {
 			this->samsungAc->setMode(kSamsungAcCool);
 			this->sendShort = true;
-		} else if (property->equalsString("Fan")) {
+		} else if (property->equalsString(MODE_FAN)) {
 			this->samsungAc->setMode(kSamsungAcFan);
 			this->sendShort = true;
 		}
@@ -155,19 +163,19 @@ protected:
 	}
 
 	void fanPropertyChanged(WProperty* property) {
-		if (property->equalsString("Auto")) {
+		if (property->equalsString(FAN_MODE_AUTO)) {
 			this->samsungAc->setFan(kSamsungAcFanAuto);
 			this->sendShort = true;
-		} else if (property->equalsString("Low")) {
+		} else if (property->equalsString(FAN_MODE_LOW)) {
 			this->samsungAc->setFan(kSamsungAcFanLow);
 			this->sendShort = true;
-		} else if (property->equalsString("Medium")) {
+		} else if (property->equalsString(FAN_MODE_MEDIUM)) {
 			this->samsungAc->setFan(kSamsungAcFanMed);
 			this->sendShort = true;
-		} else if (property->equalsString("High")) {
+		} else if (property->equalsString(FAN_MODE_HIGH)) {
 			this->samsungAc->setFan(kSamsungAcFanHigh);
 			this->sendShort = true;
-		} else if (property->equalsString("Turbo")) {
+		} else if (property->equalsString(FAN_MODE_TURBO)) {
 			this->samsungAc->setFan(kSamsungAcFanTurbo);
 			this->sendShort = true;
 		}
