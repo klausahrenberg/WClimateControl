@@ -3,7 +3,7 @@
 #include "WSamsungDevice.h"
 
 #define APPLICATION "Climate Control"
-#define VERSION "1.13"
+#define VERSION "1.17"
 #define FLAG_SETTINGS 0x17
 #define DEBUG false
 
@@ -18,7 +18,7 @@ void setup() {
 	if (DEBUG) {
 		Serial.begin(9600);
 	}
-	network = new WNetwork(DEBUG, APPLICATION, VERSION, false, LED_BUILTIN, FLAG_SETTINGS);
+	network = new WNetwork(DEBUG, APPLICATION, VERSION, true, LED_BUILTIN, FLAG_SETTINGS);
 	//Samsung Ac
 	samsungDevice = new WSamsungDevice(network, PIN_IR_SEND, PIN_BUTTON);
 	network->addDevice(samsungDevice);

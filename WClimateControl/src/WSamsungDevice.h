@@ -1,7 +1,6 @@
 #ifndef W_SAMSUNG_DEVICE_H
 #define W_SAMSUNG_DEVICE_H
 
-#include <ArduinoJson.h>
 #include "IRremoteESP8266.h"
 #include "IRsend.h"
 #include "ir_Samsung.h"
@@ -120,15 +119,15 @@ public:
 		}
 	}
 
-	void printConfigPage(ESP8266WebServer* webServer, WStringStream* page) {
+	void printConfigPage(AsyncWebServerRequest* request, WStringStream* page) {
     page->printAndReplace(FPSTR(HTTP_CONFIG_PAGE_BEGIN), getId());
     page->printAndReplace(FPSTR(HTTP_CHECKBOX_OPTION), "sa", "sa", (showAsWebthingDevice->getBoolean() ? HTTP_CHECKED : ""), "", "Show as Mozilla Webthing device");
     page->print(FPSTR(HTTP_CONFIG_SAVE_BUTTON));
 	}
 
-	void saveConfigPage(ESP8266WebServer* webServer, WStringStream* page) {
+	void saveConfigPage(AsyncWebServerRequest* request, WStringStream* page) {
 		network->notice(F("Save config page"));
-		this->showAsWebthingDevice->setBoolean(webServer->arg("sa") == HTTP_TRUE);
+		this->showAsWebthingDevice->setBoolean(request->arg("sa") == HTTP_TRUE);
 	}
 
 protected:
