@@ -119,13 +119,13 @@ public:
 		}
 	}
 
-	void printConfigPage(AsyncWebServerRequest* request, WStringStream* page) {
-    page->printAndReplace(FPSTR(HTTP_CONFIG_PAGE_BEGIN), getId());
-    page->printAndReplace(FPSTR(HTTP_CHECKBOX_OPTION), "sa", "sa", (showAsWebthingDevice->getBoolean() ? HTTP_CHECKED : ""), "", "Show as Mozilla Webthing device");
+	void printConfigPage(AsyncWebServerRequest* request, Print* page) {
+    page->printf(HTTP_CONFIG_PAGE_BEGIN, getId());
+    page->printf(HTTP_CHECKBOX_OPTION, "sa", "sa", (showAsWebthingDevice->getBoolean() ? HTTP_CHECKED : ""), "", "Show as Mozilla Webthing device");
     page->print(FPSTR(HTTP_CONFIG_SAVE_BUTTON));
 	}
 
-	void saveConfigPage(AsyncWebServerRequest* request, WStringStream* page) {
+	void saveConfigPage(AsyncWebServerRequest* request, Print* page) {
 		network->notice(F("Save config page"));
 		this->showAsWebthingDevice->setBoolean(request->arg("sa") == HTTP_TRUE);
 	}

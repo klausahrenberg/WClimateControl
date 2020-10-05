@@ -3,7 +3,7 @@
 #include "WSamsungDevice.h"
 
 #define APPLICATION "Climate Control"
-#define VERSION "1.17"
+#define VERSION "1.18"
 #define FLAG_SETTINGS 0x17
 #define DEBUG false
 
